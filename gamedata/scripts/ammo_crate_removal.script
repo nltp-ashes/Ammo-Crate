@@ -1,0 +1,62 @@
+---[[
+--- Original Author(s) : bmblbx176 (Leviathan)
+--- Edited : NLTP_ASHES
+--- Date : 20/12/2022
+---
+--- Based off "Despawn utility" script by Leviathan, script used to remove all the items added by Western Goods from a savegame.
+---
+---]]
+
+local CONST_ADDON_REMOVAL = false
+
+function despawn_filtered_objects ()
+	if not CONST_ADDON_REMOVAL then return end
+
+	local despawn_count = 0
+
+	for id =1, 65534 do
+
+		local se_obj = alife_object(id)
+
+		if se_obj and string.match(se_obj:name(), "ammo_crate") then
+
+			if se_obj.parent_id == 65535 then
+				spawn_ammo_in_world(se_obj)
+			else
+				spawn_ammo_in_inv(se_obj, alife_object(se_obj.parent_id))
+			end
+
+			alife_release(se_obj)
+
+			despawn_count = despawn_count + 1
+		end
+	end	  
+
+	news_manager.send_tip(db.actor, "Successfully removed %c[yellow]" .. despawn_count .. "%c[default] items from the savegame.", nil, nil, 10000)
+end
+
+function spawn_ammo_in_inv(ammo_crate_se, se_obj)
+	for k,ammo in pairs(ammo_crate_core.AMMO_CRATES[ammo_crate_se.id]) do
+		if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
+			local se_mag = alife_create_item(ammo.sec, se_obj)
+			magazine_binder.set_data(se_mag.id, ammo.data)
+		else
+			alife_create_item(ammo.sec, se_obj, {ammo = ammo.count})
+		end
+	end
+end
+
+function spawn_ammo_in_world(ammo_crate_se)
+	for k,ammo in pairs(ammo_crate_core.AMMO_CRATES[ammo_crate_se.id]) do
+		if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
+			local se_mag = alife_create(ammo.sec,ammo_crate_se.position,ammo_crate_se.m_level_vertex_id,ammo_crate_se.m_game_vertex_id)
+			magazine_binder.set_data(se_mag.id, ammo.data)
+		else
+			alife():create_ammo(ammo.sec, ammo_crate_se.position, ammo_crate_se.m_level_vertex_id, ammo_crate_se.m_game_vertex_id, 65535, ammo.count)
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("save_state", despawn_filtered_objects)
+end

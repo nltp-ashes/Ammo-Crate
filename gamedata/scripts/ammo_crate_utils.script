@@ -1,0 +1,91 @@
+---[[
+--- Original Author(s) : NLTP_ASHES
+--- Edited : N/A
+--- Date : 01/02/2023
+--- License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+---
+--- Script used to define various common functions defined in the scripts of the Ammo Crate addon.
+---]]
+
+local CONST_DEBUG_ENABLED = true
+
+-- Function used to print information into the console/log file only when Western Goods' debug mode is enabled.
+function dbg_printf(...)
+    if not CONST_DEBUG_ENABLED then return end
+    printf(...)
+end
+
+-- Function used to know if a certain value is contained in a table. This function is generic enough so that it'd work on any table.
+function table_contains(tab, val)
+	if not tab then return end
+	for key,value in pairs(tab) do
+		if val == value then
+			return true
+		end
+	end
+	return false
+end
+
+-- Function used to get a random id (as an int) from a given table. Returns a random number between 1 and the size of the table.
+function table_random_id(tab)
+	if not tab then return end
+	return math.random(1,size_table(tab))
+end
+
+-- Function used to clear the code a bit.
+function round_number(num)
+	return tostring(math.floor(num+0.5))
+end
+
+-- Function used to know if there exists a translation for a given game string.
+function has_translation(str)
+	return game.translate_string(str) ~= str
+end
+
+-- Function used to get the distance between two points in 2D space.
+function get_distance(position_1, position_2)
+	if not (position_1 and position_2) then return nil end
+	
+    local x = math.abs(position_1.x - position_2.x)
+    local z = math.abs(position_1.z - position_2.z)
+    local distance = math.sqrt((x * x) + (z * z))
+	
+    return distance
+end
+
+-- Function used to get a online object (if it exists).
+function find_object_by_id(id)
+	return db.storage[id] and db.storage[id].object or level.object_by_id(id)
+end
+
+--- Function used to get the real community of the NPC by checking spawn id
+--- @author HarukaSai
+--- @param npc game_object
+--- @param default string
+--- @return string
+function get_real_community(npc, default)
+
+	local furniture = {
+		["esc_m_trader"] = true,
+		["red_m_lesnik"] = true
+	}
+
+	local blacklisted_comms = {
+		["trader"] = true,
+		["monster"] = true
+	}
+
+	if furniture[npc:name()] then
+		return "stalker"
+	end
+	local community = character_community(npc)
+	if not blacklisted_comms[community] then
+		return community
+	end
+	local squad_community = get_object_squad(npc):get_squad_community()
+	if not blacklisted_comms[squad_community] then
+		return squad_community
+	else
+		return default
+	end
+end
