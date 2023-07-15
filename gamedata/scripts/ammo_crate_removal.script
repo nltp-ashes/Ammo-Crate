@@ -1,11 +1,9 @@
----[[
 --- Original Author(s) : bmblbx176 (Leviathan)
 --- Edited : NLTP_ASHES
 --- Date : 20/12/2022
+--- License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 ---
---- Based off "Despawn utility" script by Leviathan, script used to remove all the items added by Western Goods from a savegame.
----
----]]
+--- Based off "Despawn utility" script by Leviathan, script used to remove all the items added by Western Goods from a save-game.
 
 local CONST_ADDON_REMOVAL = false
 
@@ -32,7 +30,7 @@ function despawn_filtered_objects ()
 		end
 	end	  
 
-	news_manager.send_tip(db.actor, "Successfully removed %c[yellow]" .. despawn_count .. "%c[default] items from the savegame.", nil, nil, 10000)
+	news_manager.send_tip(db.actor, "Successfully removed %c[yellow]" .. despawn_count .. "%c[default] items from the save-game.", nil, nil, 10000)
 end
 
 function spawn_ammo_in_inv(ammo_crate_se, se_obj)
