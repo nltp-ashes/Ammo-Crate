@@ -38,24 +38,24 @@ To uninstall the addon :
 
 ### CHANGELOG
 
-> v1.2.0 - 04/03/2023 - Major Update
+> **v1.2.0 - 04/03/2023 - Minor Update**
 > - Added full Mags Redux compatibility. You can now put magazines in the ammo crate;
 > - Updated addon removal so that it will give you back the magazines contained in the various crates.
 
-> v1.1.2 - 14/02/2023 - Hotfix
+> **v1.1.2 - 14/02/2023 - Hotfix**
 > - Fixed an issue due to which the weight of the crate was incorrect after loading a save game;
 > - Updated addon removal so that it will give you back the ammo contained in the various crates.
 
-> v1.1.1 - 11/02/2023 - Hotfix
+> **v1.1.1 - 11/02/2023 - Hotfix**
 > - Added a CTD when trader_autoinject.script is outdated;
 > - Added a separate icon for the crate, to avoid conflicts with icon addons (Thanks 191830221zhang);
 > - Fixed a CTD that sometimes occurred after closing the ammo crate (Thanks Matumba_4).
 
-> v1.1.0 - 02/02/2023 - Minor Update
+> **v1.1.0 - 02/02/2023 - Minor Update**
 > - Added the item for sale to mechanics;
 > - Army soldiers can now spawn the item when killed.
 
-> v1.0.0 - 01/02/2023 - Initial Release
+> **v1.0.0 - 01/02/2023 - Initial Release**
 > - Adds a new item to the game : an ammunition crate;
 > - You can (only) store ammunition inside it;
 > - The crate does not have a carrying capacity. The limit is your own carrying capacity;
