@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<!--=================================================================================================================-->
+<!--                                                                                                                 -->
+<!--    Original Author(s) : NLTP_ASHES                                                                              -->
+<!--    Edited : N/A                                                                                                 -->
+<!--    Date : 03/06/2024                                                                                            -->
+<!--    License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)          -->
+<!--                                                                                                                 -->
+<!--    Translation file for Ammo Crate addon.                                                                          -->
+<!--                                                                                                                 -->
+<!--=================================================================================================================-->
+<string_table>
+
+    <!--=============================================================================================================-->
+    <!--    Core Strings                                                                                             -->
+    <!--=============================================================================================================-->
+
+    <!-- Out-of-date trader auto_inject.script -->
+    <string id="st_ac_err_outdated_trader_autoinject_script_title">
+        <text>Script trader_autoinject.script out-of-date or missing.</text>
+    </string>
+
+    <string id="st_ac_err_outdated_trader_autoinject_script_what">
+        <text>The script trader_autoinject.script is out of date. Ammo Crate comes with an up-to-date one, meaning one of your addons overwrote it. Please arrange your addons so the latest version of that script gets enabled/added last.</text>
+    </string>
+
+    <string id="st_ac_err_outdated_trader_autoinject_script_why">
+        <text>Ammo Crate requires this script to be up-to-date to enable certain trade features.</text>
+    </string>
+
+    <string id="st_ac_err_outdated_trader_autoinject_script_where">
+        <text>You can download the latest version from Github : https://github.com/ahuyn/anomaly-dependencies/tree/master/trader_autoinject</text>
+    </string>
+
+    <string id="st_ac_open">
+        <text>Open</text>
+    </string>
+
+    <!--=============================================================================================================-->
+    <!--    Item Strings                                                                                             -->
+    <!--=============================================================================================================-->
+
+    <string id="st_ac_ammo_crate">
+        <text>Ammunition crate</text>
+    </string>
+
+    <string id="st_ac_ammo_crate_s">
+        <text>Ammo crate</text>
+    </string>
+
+    <string id="st_ac_ammo_crate_descr">
+        <text>
+            An old military ammo crate. It's completely empty. That being said, it would make for the perfect storage for keeping your ammo dry and safe. It also will prevent your backpack from getting to cluttered.\n
+            \n
+            %c[ui_gray_1]PROPERTIES:\n
+            %c[d_blue] • %c[ui_gray_2] everyday item\n
+            %c[d_blue] • %c[ui_gray_2] military item\n
+        </text>
+    </string>
+
+</string_table>

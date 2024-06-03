@@ -1,37 +1,44 @@
-;;--============================================================================--;;
-;;--================| Ammo Crate |==============================================--;;
-;;--============================================================================--;;
+;;====================================================================================================================;;
+;;                                                                                                                    ;;
+;;    Original Author(s) : NLTP_ASHES                                                                                 ;;
+;;    Edited : N/A                                                                                                    ;;
+;;    Date : 03/06/2024                                                                                               ;;
+;;    License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)             ;;
+;;                                                                                                                    ;;
+;;    Config file used to define the ammo crate item.                                                                 ;;
+;;                                                                                                                    ;;
+;;====================================================================================================================;;
 
 [ammo_crate]:itm_backpack
-script_binding                           = ammo_crate_core.bind
-visual 									 = dynamics\box\expl_dinamit.ogf
-kind			                         = i_tool
+script_binding                              = ammo_crate_binder.bind
+visual                                      = ammo_crate\ammo_crate.ogf
+kind                                        = i_tool
 
-use1_functor         					 = ammo_crate_core.menu_open
-use1_action_functor  					 = ammo_crate_core.func_open_crate
-use1_allow_db         					 = true
+use1_functor                                = ammo_crate_binder.menu_open
+use1_action_functor                         = ammo_crate_binder.func_open_crate
+use1_allow_db                               = true
 
-inv_name			                     = st_ac_ammo_crate
-inv_name_short			                 = st_ac_ammo_crate_s
-description			                     = st_ac_ammo_crate_descr
-inv_weight			                     = 1.0
-cost				                     = 1200
+inv_name                                    = st_ac_ammo_crate
+inv_name_short                              = st_ac_ammo_crate_s
+description                                 = st_ac_ammo_crate_descr
+inv_weight                                  = 1.0
+cost                                        = 1200
 
-empty_weight							 = 1.0
-additional_inventory_weight				 = 0.0
-additional_inventory_weight2			 = 0.0
+empty_weight                                = 1.0
+additional_inventory_weight                 = 0.0
+additional_inventory_weight2                = 0.0
 
-icons_texture				             = ui\icons\ui_icon_ammo_crate
-inv_grid_width                           = 2
-inv_grid_height                          = 2
-inv_grid_x                     			 = 0
-inv_grid_y               				 = 0
+icons_texture                               = ammo_crate\ui\icons\ui_icon_ammo_crate
+inv_grid_width                              = 2
+inv_grid_height                             = 2
+inv_grid_x                                  = 0
+inv_grid_y                                  = 0
 
-highlight_equipped 						 = false
-slot 						             = -1
-can_stack 								 = false
-can_trade                                = true
-quest_item     		                     = false
-remove_after_use                         = false
+highlight_equipped                          = false
+slot                                        = -1
+can_stack                                   = false
+can_trade                                   = true
+quest_item                                  = false
+remove_after_use                            = false
 
-tier                                     = 1
+tier                                        = 1

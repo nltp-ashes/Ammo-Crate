@@ -1,60 +1,97 @@
---- Original Author(s) : bmblbx176 (Leviathan)
---- Edited : NLTP_ASHES
---- Date : 20/12/2022
---- License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
----
---- Based off "Despawn utility" script by Leviathan, script used to remove all the items added by Western Goods from a save-game.
+---==================================================================================================================---
+---                                                                                                                  ---
+---    Original Author(s) : bmblbx176 (Leviathan)                                                                    ---
+---    Edited : NLTP_ASHES                                                                                           ---
+---    Date : 03/06/2024                                                                                             ---
+---    License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)           ---
+---                                                                                                                  ---
+---    Script used to define the options in MCM.                                                                     ---
+---                                                                                                                  ---
+---    Based off "Despawn utility" script by Leviathan, script used to remove all Ammo Crates from a save-game.      ---
+---                                                                                                                  ---
+---==================================================================================================================---
 
-local CONST_ADDON_REMOVAL = false
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Constants and imported functions
+-- ---------------------------------------------------------------------------------------------------------------------
 
-function despawn_filtered_objects ()
-	if not CONST_ADDON_REMOVAL then return end
+-- Imported functions
+local dbg_printf = ammo_crate_utils.dbg_printf
 
-	local despawn_count = 0
+-- ---------------------------------------------------------------------------------------------------------------------
+-- General functions
+-- ---------------------------------------------------------------------------------------------------------------------
 
-	for id =1, 65534 do
+function remove_ammo_crates()
+    local remove_count = 0
 
-		local se_obj = alife_object(id)
+    alife():iterate_object(function(se_obj)
+        if se_obj:section_name() == "ammo_crate" then
+            if se_obj.parent_id == 65535 then
+                this.spawn_ammo_in_world(se_obj)
+            else
+                this.spawn_ammo_in_inv(se_obj, alife_object(se_obj.parent_id))
+            end
 
-		if se_obj and string.match(se_obj:name(), "ammo_crate") then
+            alife_release(se_obj)
 
-			if se_obj.parent_id == 65535 then
-				spawn_ammo_in_world(se_obj)
-			else
-				spawn_ammo_in_inv(se_obj, alife_object(se_obj.parent_id))
-			end
+            remove_count = remove_count + 1
+        end
+    end)
 
-			alife_release(se_obj)
-
-			despawn_count = despawn_count + 1
-		end
-	end	  
-
-	news_manager.send_tip(db.actor, "Successfully removed %c[yellow]" .. despawn_count .. "%c[default] items from the save-game.", nil, nil, 10000)
+    dbg_printf("[AMMO CRATE] Successfully removed %s models from the save-game", remove_count)
 end
 
-function spawn_ammo_in_inv(ammo_crate_se, se_obj)
-	for k,ammo in pairs(ammo_crate_core.AMMO_CRATES[ammo_crate_se.id]) do
-		if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
-			local se_mag = alife_create_item(ammo.sec, se_obj)
-			magazine_binder.set_data(se_mag.id, ammo.data)
-		else
-			alife_create_item(ammo.sec, se_obj, {ammo = ammo.count})
-		end
-	end
+--- Function used to spawn ammunition (or a magazine, if Mags Redux is installed) in the inventory of a specific object.
+--- @param crate_se_obj alife_object
+--- @param parent_se_obj alife_object
+--- @return nil
+function spawn_ammo_in_inv(crate_se_obj, parent_se_obj)
+    for _,ammo in pairs(ammo_crate_binder.ammo_crates[crate_se_obj.id]) do
+        if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
+            local se_mag = alife_create_item(ammo.sec, parent_se_obj)
+            magazine_binder.set_data(se_mag.id, ammo.data)
+        else
+            alife_create_item(ammo.sec, parent_se_obj, { ammo = ammo.count })
+        end
+    end
 end
 
-function spawn_ammo_in_world(ammo_crate_se)
-	for k,ammo in pairs(ammo_crate_core.AMMO_CRATES[ammo_crate_se.id]) do
-		if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
-			local se_mag = alife_create(ammo.sec,ammo_crate_se.position,ammo_crate_se.m_level_vertex_id,ammo_crate_se.m_game_vertex_id)
-			magazine_binder.set_data(se_mag.id, ammo.data)
-		else
-			alife():create_ammo(ammo.sec, ammo_crate_se.position, ammo_crate_se.m_level_vertex_id, ammo_crate_se.m_game_vertex_id, 65535, ammo.count)
-		end
-	end
+--- Function used to spawn ammunition (or a magazine, if Mags Redux is installed) in the world.
+--- @param crate_se_obj alife_object
+--- @return nil
+function spawn_ammo_in_world(crate_se_obj)
+    for _,ammo in pairs(ammo_crate_binder.ammo_crates[crate_se_obj.id]) do
+        if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
+            local se_mag = alife_create(ammo.sec, crate_se_obj.position, crate_se_obj.m_level_vertex_id, crate_se_obj.m_game_vertex_id)
+            magazine_binder.set_data(se_mag.id, ammo.data)
+        else
+            alife():create_ammo(ammo.sec, crate_se_obj.position, crate_se_obj.m_level_vertex_id, crate_se_obj.m_game_vertex_id, 65535, ammo.count)
+        end
+    end
 end
 
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Callbacks
+-- ---------------------------------------------------------------------------------------------------------------------
+
+--- Function called by callback when the player saves the game.
+--- This function will iterate all alife_objects, and will delete the ones that are ammo crates.
+--- @return nil
+function save_state()
+    if not ammo_crate_mcm.get_config("addon_removal") then
+        return
+    end
+
+    this.remove_ammo_crates()
+end
+
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Callbacks Registration
+-- ---------------------------------------------------------------------------------------------------------------------
+
+--- Function used to register callbacks.
+--- @return nil
 function on_game_start()
-	RegisterScriptCallback("save_state", despawn_filtered_objects)
+    RegisterScriptCallback("save_state", save_state)
 end
