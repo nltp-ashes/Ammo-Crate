@@ -16,7 +16,7 @@ A note to other modders : when ammunition is put in the crate, the ID isn't kept
 
 ### REQUIREMENTS
 This addon requires the following :
-1. [S.T.A.L.K.E.R. Anomaly 1.5.2](https://www.moddb.com/mods/stalker-anomaly/downloads/stalker-anomaly-151-to-152)
+- [S.T.A.L.K.E.R. Anomaly 1.5.2](https://www.moddb.com/mods/stalker-anomaly/downloads/stalker-anomaly-151-to-152)
 
 ---
 
